@@ -6,8 +6,38 @@ export const MenuGlobal: GlobalConfig = {
   slug: menuSlug,
   fields: [
     {
-      name: 'globalText',
+      name: 'name',
       type: 'text',
+      defaultValue: 'initialValueRoot',
+      hooks: {
+        afterChange: [
+          ({ value, previousValue }) => {
+            if (value !== previousValue) {
+              return `${previousValue} ${value}`
+            }
+          },
+        ],
+      },
+    },
+    {
+      name: 'submenu',
+      type: 'group',
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          defaultValue: 'initialValueSub',
+          hooks: {
+            afterChange: [
+              ({ value, previousValue }) => {
+                if (value !== previousValue) {
+                  return `${previousValue} ${value}`
+                }
+              },
+            ],
+          },
+        },
+      ],
     },
   ],
 }

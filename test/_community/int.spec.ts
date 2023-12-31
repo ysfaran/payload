@@ -1,7 +1,7 @@
 import payload from '../../packages/payload/src'
 import { devUser } from '../credentials'
 import { initPayloadTest } from '../helpers/configHelpers'
-import { postsSlug } from './collections/Posts'
+import { menuSlug } from './globals/Menu'
 
 require('isomorphic-fetch')
 
@@ -45,28 +45,14 @@ describe('_Community Tests', () => {
   // --__--__--__--__--__--__--__--__--__
 
   it('local API example', async () => {
-    const newPost = await payload.create({
-      collection: postsSlug,
+    const result = await payload.updateGlobal({
+      slug: menuSlug,
       data: {
-        text: 'LOCAL API EXAMPLE',
+        name: 'nextValueRoot',
       },
     })
 
-    expect(newPost.text).toEqual('LOCAL API EXAMPLE')
-  })
-
-  it('rest API example', async () => {
-    const newPost = await fetch(`${apiUrl}/${postsSlug}`, {
-      method: 'POST',
-      headers: {
-        ...headers,
-        Authorization: `JWT ${jwt}`,
-      },
-      body: JSON.stringify({
-        text: 'REST API EXAMPLE',
-      }),
-    }).then((res) => res.json())
-
-    expect(newPost.doc.text).toEqual('REST API EXAMPLE')
+    expect(result.name).toEqual('initialValueRoot nextValueRoot')
+    expect((result.submenu as any).name).toEqual('initialValueSub')
   })
 })
